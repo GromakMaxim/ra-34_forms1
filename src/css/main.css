@@ -21,6 +21,7 @@ input:focus {
 
 .display-color {
     margin-top: 5px;
+    padding: 5px;
 }
 
 input, .display-color {
