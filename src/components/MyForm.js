@@ -8,7 +8,7 @@ export default class MyForm extends Component {
         this.state = {
             inputValue: '',
             hex: '',
-            rgb: 'Отправить',
+            rgb: '',
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -31,48 +31,57 @@ export default class MyForm extends Component {
     handleChange(event) {
         if (event.target.value.match(/#[a-f0-9]{6}\b/gi)) {
             let rgb = this.hexToRGB(event.target.value);
-            console.log(rgb)
             this.setState({
                 hex: event.target.value,
                 rgb: rgb,
-                inputValue: event.target.value
             });
             console.log('parsed')
         } else {
             this.setState({
-                inputValue: event.target.value
+                inputValue: event.target.value,
+                hex: '',
+                rgb: '',
             })
-
-            if (event.target.value.length > 7) {
-                this.setState({
-                    inputValue: event.target.value,
-                    hex: '#e94b35',
-                    rgb: 'ошибка',
-                })
-                console.log('ошибка')
-            }
         }
     }
 
     handleSubmit(event) {
-        alert('Отправленное имя: ' + this.state.inputValue);
         event.preventDefault();
-        this.setState({
-            parsedValue: this.state.inputValue
-        })
+
+
     }
 
     render() {
-        let label = (this.state.rgb === 'ошибка') ? <input type="submit" value='Ошибка!'/> :
-            <input type="submit" value={this.state.rgb}/>
-        let color = (this.state.rgb === 'ошибка') ? {backgroundColor: '#e94b35'} : {backgroundColor: this.state.rgb};
+
+        let parsedRGBValue;
+        let msg;
+        if (this.state.rgb.length !== 0) {
+            msg = parsedRGBValue = this.state.rgb
+        } else {
+            if (this.state.inputValue.length === 7) {
+                parsedRGBValue = 'red';
+                msg = 'Ошибка!';
+            } else {
+                parsedRGBValue = '';
+                msg = 'color'
+            }
+        }
+
+        console.log(parsedRGBValue)
 
         return (
-            <form className='myForm' style={color} onSubmit={this.handleSubmit}>
-                <label>
-                    <input type="text" value={this.state.inputValue} onChange={this.handleChange}/>
-                </label>
-                {label}
+            <form
+                className='myForm'
+                onSubmit={this.handleSubmit}
+                style={{
+                    backgroundColor: parsedRGBValue
+                }}>
+                <div className='wrapper flex-col'>
+                    <label>
+                        <input type="text" placeholder='example #0033ff' maxLength='7' onChange={this.handleChange}/>
+                    </label>
+                    <div className='display-color b1'>{msg}</div>
+                </div>
             </form>
         );
     }
