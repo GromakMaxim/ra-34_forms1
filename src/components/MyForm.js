@@ -35,7 +35,7 @@ export default class MyForm extends Component {
                 hex: event.target.value,
                 rgb: rgb,
             });
-            console.log('parsed')
+
         } else {
             this.setState({
                 inputValue: event.target.value,
@@ -66,8 +66,6 @@ export default class MyForm extends Component {
                 msg = 'color'
             }
         }
-
-        console.log(parsedRGBValue)
 
         return (
             <form
